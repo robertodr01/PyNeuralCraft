@@ -1,4 +1,4 @@
-from perceptron import Linear
+from activation_function import Linear
 from layer import Layer
 from mlp import MLP
 import numpy as np

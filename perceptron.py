@@ -1,19 +1,5 @@
 import numpy as np
-class ActivationFunction:
-
-    def output(self, x: np.ndarray):
-        pass
-
-    def derivative(self, x: np.ndarray):
-        pass
-
-class Linear(ActivationFunction):
-
-    def output(self, x: np.ndarray):
-        return x
-
-    def derivative(self, x: np.ndarray):
-        return [1] * x.size
+from activation_function import ActivationFunction
 class Perceptron:
 
     act_func: ActivationFunction
