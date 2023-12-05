@@ -1,6 +1,5 @@
 import activation_function
 import numpy as np
-import pytest
 
 input = np.array([1, 2])
 
