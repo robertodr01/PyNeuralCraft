@@ -1,5 +1,6 @@
 import numpy as np
-from perceptron import Perceptron, ActivationFunction
+from perceptron import Perceptron
+from activation_function import ActivationFunction
 
 class Layer:
     perceptrons: []
