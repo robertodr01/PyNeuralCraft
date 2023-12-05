@@ -2,12 +2,11 @@ import numpy as np
 
 class ActivationFunction:
 
-    def output(self, x: np.ndarray):
+    def output(self, x: np.ndarray) ->  np.ndarray:
         pass
 
-    def derivative(self, x: np.ndarray):
+    def derivative(self, x: np.ndarray) ->  np.ndarray:
         pass
-
 
 
 class Linear(ActivationFunction):
@@ -16,13 +15,13 @@ class Linear(ActivationFunction):
         return x;
 
     def derivative(self, x: np.ndarray):
-        return 1;
+        return np.full(x.size, 1);
 
 
 class Sigmoid(ActivationFunction):
     
-    def output(self, x: np.ndarray):
-        return 1 / (1 + np.exp(-x))
+    def output(self, x: np.ndarray, slope:float=1):
+        return 1 / (1 + np.exp(-(slope * x)))
 
     def derivative(self, x: np.ndarray):
         fx = self.output(x)
