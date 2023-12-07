@@ -22,3 +22,19 @@ class Metrics:
         a = self.true_pos + self.true_neg 
         b = self.true_pos + self.true_neg + self.false_pos + self.false_neg
         return a / b
+    
+    def precision(self):
+        a = self.true_pos
+        b = self.true_pos + self.true_neg
+        return a / b
+    
+    def recall(self):
+        a = self.true_pos
+        b = self.true_pos + self.false_neg
+        return a / b
+    
+    def f1(self):
+        a = self.precision() * self.recall()
+        b = self.precision() + self.recall()
+        return 2 * (a / b)
+    
