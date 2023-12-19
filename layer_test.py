@@ -29,7 +29,7 @@ def test_execute():
     layer1 = Layer(3, act_func=act_func, n_inputs=len(input[0]))
     layer2 = Layer(5, act_func=act_func, n_inputs=3)
     layer3 = Layer(len(oracle[0]), act_func=act_func, n_inputs=5)
-    for i in range(500):
+    for i in range(1000):
         for i in range(0, len(input)):
             net1, output1 = layer1.run(np.array(input[i]))
             net2, output2 = layer2.run(output1)

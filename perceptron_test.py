@@ -1,5 +1,5 @@
 from perceptron import Perceptron
-from activation_function import Sigmoid
+from activation_function import Linear
 import numpy as np
 from metrics import Metrics
 input = [
@@ -25,15 +25,16 @@ oracle = [
 
 def test_execute():
     metrics = Metrics()
-    act_func = Sigmoid()
-    p = Perceptron(len(input[0]), act_func, learning_rate=0.001)
+    act_func = Linear()
+    p = Perceptron(len(input[0]), act_func, learning_rate=0.01)
     for i in range(1000):
         for i in range(0, len(input)):
             net, output = p.run(np.array(input[i]))
-            p.train(oracle[i], net, output, np.array(input[i]))
+            error = oracle[i] - output
+            p.train(error, net, output, np.array(input[i]))
 
     for i in range(0, len(input)):
         _, out = p.run(np.array(input[i]))
-        print(f'case {i}: {round(out), oracle[i]}')
+        print(f'case {i}: {out, oracle[i]}')
 
 test_execute()
