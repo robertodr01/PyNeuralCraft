@@ -22,16 +22,13 @@ class Layer:
             (net, out) = self.perceptrons[i].run(x)
             outs = np.append(outs, out)
             nets = np.append(nets, net)
-        print()
-        print(x)
         return (nets, outs)
 
     def train(self, errors: np.ndarray, net: np.ndarray, output: np.ndarray):
         propagate_errors = np.array([0.0] * self.perceptrons[0].weights.size)
         for i in range(len(self.perceptrons)):
-            #print(errors[i], net[i], output[i])
-            (delta, weights) = self.perceptrons[i].train(errors[i], net[i], output[i])
-            propagate_errors += delta*weights
+            propagate_errors += self.perceptrons[i].train(errors[i], net[i], output[i])
+            #print(propagate_errors)
         return propagate_errors
     
     def summary(self):

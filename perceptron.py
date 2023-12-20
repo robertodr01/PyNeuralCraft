@@ -20,33 +20,29 @@ class Perceptron:
         self.weights = np.array([])
         self.n_inputs = n_inputs
         self.eta = learning_rate
-        self.bias = random.random()
+        self.bias = np.random.uniform(0.3, 0.9)
         for _ in range(n_inputs):
-            value = random.random()
+            value = np.random.uniform(0.3, 0.9)
             self.weights = np.append(self.weights, value)
 
     def run(self, x: np.ndarray):
         if isinstance(x, np.ndarray) == False:
             raise ValueError("Output must be a numpy list")
         if x.size != self.weights.size:
-            print(x.size, self.weights.size)
             raise ValueError("Number of inputs must be equal to number of weights")
         net: float = np.dot(x, self.weights) + self.bias
         out = self.act_func.output(np.array([net]))[0]
         return (net, out)
     
     def train(self, error: int, net: int, output: int) -> np.ndarray:
-        print(error, net, output)
         weights = np.insert(self.weights, 0, self.bias)
         der = self.act_func.derivative(np.array([net]))[0] #* input
-        print(der)
-        print()
-        delta = error * der * 1000
+        delta = error * der
         weights = weights + self.eta * delta * output
         self.weights = weights[1:]
         self.bias = weights[0]
-        #print([delta*1000]*self.weights.size)
-        return (np.array([delta]*self.weights.size), self.weights)
+        #print(delta*self.weights)
+        return np.array(delta*self.weights)
     
     def summary(self):
         print(self.weights, self.bias)
