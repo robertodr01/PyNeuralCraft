@@ -12,10 +12,10 @@ class ActivationFunction:
 class Linear(ActivationFunction):
     
     def output(self, x: np.ndarray):
-        return x;
+        return x
 
     def derivative(self, x: np.ndarray):
-        return np.full(x.size, 1);
+        return np.full(x.size, 1)
 
 
 class Sigmoid(ActivationFunction):
