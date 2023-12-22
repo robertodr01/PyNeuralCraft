@@ -5,9 +5,9 @@ def get_splits(df: pd.DataFrame, train_percentage: float, test_percentage: float
     if train_percentage + test_percentage + validation_percentage != 1:
         raise ValueError('Error on total percentage, it`s not 1!')
         
-    train_percentage = train_percentage * 100;
-    test_percentage = test_percentage * 100;
-    validation_percentage = validation_percentage * 100;
+    train_percentage = train_percentage * 100
+    test_percentage = test_percentage * 100
+    validation_percentage = validation_percentage * 100
     
     n_instances = len(df)
 
@@ -20,6 +20,6 @@ def get_splits(df: pd.DataFrame, train_percentage: float, test_percentage: float
     test_df = df[train_split: train_split + test_split]
     validation_df = df[train_split + test_split : ]
 
-    return train_df, test_df, validation_df;
+    return train_df, test_df, validation_df
 
 
