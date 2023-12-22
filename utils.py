@@ -16,8 +16,6 @@ def get_splits(df: pd.DataFrame, train_percentage: float, test_percentage: float
     test_split = remaining_split - int(n_instances * validation_percentage / 100)
     val_split = remaining_split - test_split
 
-    print(train_split, test_split, val_split)
-
     train_df = df[: train_split]
     test_df = df[train_split: train_split + test_split]
     validation_df = df[train_split + test_split : ]
