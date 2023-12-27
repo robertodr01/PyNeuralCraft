@@ -34,15 +34,13 @@ class MLP:
                     outputs_for_layer.append(output)
                     inputs_for_layer.append(input_for_layer)
                     input_for_layer = output
-                #np.round(output, 2)
                 error = (np.array(oracle[j]) - output)
                 global_error += error
                 for k in range(len(self.layers) - 1, -1, -1):
-                    propagate_errors = self.layers[k].train(error, nets_for_layer[k], outputs_for_layer[k])
+                    propagate_errors = self.layers[k].train(error, nets_for_layer[k], outputs_for_layer[k], inputs_for_layer[k])
                     error = propagate_errors
             f.write(f"{global_error}\n")
             f.close()
-            # print(np.array(oracle[j]), output)
                  
     def summary(self):
         for layer in self.layers:
