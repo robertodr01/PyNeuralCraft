@@ -77,7 +77,7 @@ class Layer:
                 vel_w = nesterov(self.vel_w_old, mom_w, delta_w)
                 self.vel_w_old = vel_w
                 vel_b = nesterov(self.vel_b_old, mom_b, delta_b)
-                self.vel__b_old = vel_b
+                self.vel_b_old = vel_b
         
             self.delta_w_old[i] = delta_w
             self.delta_b_old[i] = delta_b
