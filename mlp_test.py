@@ -24,9 +24,9 @@ def test_execute():
     lr = 0.001
     f = open("logs.txt", "w")
     f.close()
-    mlp.add(Layer(9, act_func=act_func1, n_inputs=len(inputs[0]), learning_rate=lr))
-    #mlp.add(Layer(9, act_func=act_func1, n_inputs=8, learning_rate=lr))
-    mlp.add(Layer(len(oracles[0]), act_func=act_func2, n_inputs=9, learning_rate=lr))
+    mlp.add(Layer(9, act_func=act_func1, n_inputs=len(inputs[0])))
+    #mlp.add(Layer(9, act_func=act_func1, n_inputs=8))
+    mlp.add(Layer(len(oracles[0]), act_func=act_func2, n_inputs=9))
     #mlp.summary()
     
     mlp.fit(inputs, oracles, epochs=1000)
