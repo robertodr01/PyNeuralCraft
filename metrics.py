@@ -1,18 +1,30 @@
 import numpy as np
 import pandas as pd
-
+import matplotlib.pyplot as plt
+from copy import deepcopy
 class Metrics:
+    
     true_positive: int
     true_negative: int
-    def __init__(self):
+    accuracy_results = np.array([])
+    metrics = []
+
+    def __init__(self, metrics = []):
+        self.true_pos = 0
+        self.true_neg = 0
+        self.false_pos = 0
+        self.false_neg = 0
+        self.confusion_matrix = pd.DataFrame()
+        self.metrics = deepcopy(metrics)
+
+    def reset(self):
         self.true_pos = 0
         self.true_neg = 0
         self.false_pos = 0
         self.false_neg = 0
         self.confusion_matrix = pd.DataFrame()
 
-
-    def compute_results(self, out: float, oracle: float):
+    def compute__results(self, out: float, oracle: float):
         if out == 1 and oracle == 1:
             self.true_pos += 1
         if out == 0 and oracle == 0:
@@ -53,19 +65,29 @@ class Metrics:
     def accuracy(self):
         a = self.true_pos + self.true_neg 
         b = self.true_pos + self.true_neg + self.false_pos + self.false_neg
-        return a / b
-    
+        res = 0 if b == 0 else a/b * 100
+        self.accuracy_results = np.append(self.accuracy_results, res)
+        return res
+        
     def precision(self):
         a = self.true_pos
         b = self.true_pos + self.true_neg
-        return a / b
+        res = 0 if b == 0 else a/b
+        return res
     
     def recall(self):
         a = self.true_pos
         b = self.true_pos + self.false_neg
-        return a / b
+        res = 0 if b == 0 else a/b
+        return res
     
     def f1(self):
         a = self.precision() * self.recall()
         b = self.precision() + self.recall()
-        return 2 * (a / b)
+        res = 0 if b == 0 else 2 * (a / b)
+        return res
+    
+    def plot(self):
+        if 'accuracy' in self.metrics:
+            plt.plot(self.accuracy_results)
+            plt.show()

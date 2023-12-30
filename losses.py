@@ -15,3 +15,8 @@ class MeanSquaredError(Loss):
     def partial_derivative(self, label, output):
         return label - output
     
+def instantiate_loss(loss: str):
+    if loss == 'mean_squared_error':
+        return MeanSquaredError()
+    else:
+        raise Exception('no loss found')
