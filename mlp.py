@@ -1,15 +1,21 @@
 import numpy as np
 from layer import Layer
 import progressbar
-import random
+from losses import MeanSquaredError
 class MLP:
-    layers: []
-    
-    def __init__(self):
-        self.layers = []
+    layers  = []
+    loss    = None
+    eta     = 0.01
+    def __init__(self, layers):
+        if layers != None:
+            self.layers = layers
 
     def add(self, layer: Layer):
         self.layers.append(layer)
+
+    def compile(self, learning_rate: float, loss: MeanSquaredError):
+        self.loss = loss
+        self.eta = learning_rate
 
     def run(self, input: np.ndarray):
         input_for_layer = np.array(input)
@@ -20,6 +26,8 @@ class MLP:
     
     def fit(self, input=[[]], oracle=[[]], epochs=0, batch_size=0):
         bar = progressbar.ProgressBar()
+        f = open("logs.txt", "w")
+        f.close()
         for _ in bar(range(epochs)):
             f = open("logs.txt", "a")
             global_error = 0
@@ -34,8 +42,8 @@ class MLP:
                     outputs_for_layer.append(output)
                     inputs_for_layer.append(input_for_layer)
                     input_for_layer = output
-                error = (np.array(oracle[j]) - output)
-                global_error += error
+                error = self.eta * self.loss.partial_derivative(np.array(oracle[j]), output)
+                global_error += self.loss.error(np.array(oracle[j]), output)
                 for k in range(len(self.layers) - 1, -1, -1):
                     propagate_errors = self.layers[k].train(error, nets_for_layer[k], outputs_for_layer[k], inputs_for_layer[k])
                     error = propagate_errors
