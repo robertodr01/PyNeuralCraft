@@ -5,19 +5,19 @@
   "metrics": ["accuracy"],
   "layers": [
     {
-        "units": 6,
-        "inputs": 6,
-        "activation": "relu"
+      "units": 6,
+      "inputs": 6,
+      "activation": "relu"
     },
     {
-        "units": 1,
-        "inputs": 6,
-        "activation": "sigmoid"
+      "units": 1,
+      "inputs": 6,
+      "activation": "sigmoid"
     }
   ],
   "grid_search": {
-    "lr": [0.02],
-    "momentum": [0.9, 0.7],
+    "lr": [0.2, 0.3],
+    "momentum": [0.9, 0.85],
     "Nesterov": [true],
     "kernel_regularizer": [0],
     "bias_regularizer": [0]

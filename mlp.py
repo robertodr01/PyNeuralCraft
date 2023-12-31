@@ -60,14 +60,20 @@ class MLP:
                 global_error += self.loss.error(np.array(oracle[j]), outputs[-1])
                 self.metrics.compute__results(round(oracle[j][0]), round(outputs[-1][0]))
                 self.__backward(error, nets, outputs, inputs)
-            self.errors.append(global_error/len(input))
-            bar.set_description(f'ML (loss={round(global_error, 2)}) (accuracy={round(self.metrics.accuracy(), 2)})')
+            self.errors.append(round(global_error/len(input), 2))
+            bar.set_description(f'ML (loss={round(global_error/len(input), 2)}) (accuracy={round(self.metrics.accuracy(), 2)})')
 
     def plot_error(self):
         plt.plot(self.errors)
         plt.show()
 
+    def get_metrics(self):
+        return self.metrics.get_best_accuracy()
+
     def summary(self):
+        s = ""
         for layer in self.layers:
-            print(f"{10*'-'} Layer {10*'-'}")
-            layer.summary()
+            s += f"{15*'-'} Layer {15*'-'}\n"
+            s += layer.summary()
+            s += "\n"
+        return s

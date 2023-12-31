@@ -88,9 +88,16 @@ class Layer:
         return propagate_errors
     
     def summary(self):
+        s = ""
         for i in range(len(self.weights)):
-            print(f"{10*'-'} Perceptron {10*'-'}")
-            print(self.weights[i])
+            s += f"{15*'-'} Perceptron {15*'-'}\n"
+            s += f"{15*'-'}  Weights   {15*'-'}\n"
+            s += f"{str(self.weights[i])}\n"
+            s += f"{15*'-'}    Bias    {15*'-'}\n"
+            s += f"{str(self.biases[i])}\n"
+            s += "\n"
+        return s
+
 
 # optimization
 def regularization(lam, weights):

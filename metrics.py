@@ -69,6 +69,9 @@ class Metrics:
         self.accuracy_results = np.append(self.accuracy_results, res)
         return res
         
+    def get_best_accuracy(self):
+        return max(self.accuracy_results)
+    
     def precision(self):
         a = self.true_pos
         b = self.true_pos + self.true_neg

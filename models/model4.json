@@ -1,17 +1,17 @@
 {
-  "name": "model1",
+  "name": "model3",
   "epochs": 500,
   "loss": "mean_squared_error",
   "metrics": ["accuracy"],
   "layers": [
     {
-      "units": 8,
+      "units": 2,
       "inputs": 6,
       "activation": "relu"
     },
     {
       "units": 1,
-      "inputs": 8,
+      "inputs": 2,
       "activation": "sigmoid"
     }
   ],
