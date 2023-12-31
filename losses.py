@@ -15,3 +15,10 @@ class MeanSquaredError(Loss):
     def partial_derivative(self, label, output):
         return label - output
     
+
+class MeanEuclideanError(Loss):
+    def error(self, label: np.ndarray, output:np.ndarray):
+        return np.mean(np.linalg.norm(output - label))
+    
+    def partial_derivative(self, label: np.ndarray, output: np.ndarray):
+        pass
