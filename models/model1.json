@@ -1,25 +1,24 @@
 {
-  "config": {
-    "epochs": 750,
-    "loss": "mean_squared_error",
-    "metrics": ["accuracy"],
-    "layers": [
-      {
-          "units": 8,
-          "inputs": 6,
-          "activation": "relu"
-      },
-      {
-          "units": 1,
-          "inputs": 8,
-          "activation": "sigmoid"
-      }
-    ]
-  },
+  "name": "model1",
+  "epochs": 500,
+  "loss": "mean_squared_error",
+  "metrics": ["accuracy"],
+  "layers": [
+    {
+        "units": 8,
+        "inputs": 6,
+        "activation": "relu"
+    },
+    {
+        "units": 1,
+        "inputs": 8,
+        "activation": "sigmoid"
+    }
+  ],
   "grid_search": {
     "lr": [0.02],
-    "momentum": [0.9, 0.5],
-    "Nesterov": [true, false],
+    "momentum": [0.9, 0.7],
+    "Nesterov": [true],
     "kernel_regularizer": [0],
     "bias_regularizer": [0]
   }

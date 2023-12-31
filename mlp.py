@@ -61,7 +61,7 @@ class MLP:
                 self.metrics.compute__results(round(oracle[j][0]), round(outputs[-1][0]))
                 self.__backward(error, nets, outputs, inputs)
             self.errors.append(global_error/len(input))
-            bar.set_description(f'ML (loss={round(global_error, 2)})')
+            bar.set_description(f'ML (loss={round(global_error, 2)}) (accuracy={round(self.metrics.accuracy(), 2)})')
 
     def plot_error(self):
         plt.plot(self.errors)
