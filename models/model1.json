@@ -21,6 +21,6 @@
     "Nesterov": [true],
     "kernel_regularizer": [0],
     "bias_regularizer": [0],
-    "weights_initializer": ["xavier_init", "random_init"]
+    "weights_initializer": ["random_init"]
   }
 }
