@@ -3,7 +3,7 @@ from activation_function import instantiate_act_func
 import json
 from mlp import MLP
 from layer import Layer
-from itertools import product 
+from weigth_init import instantiate_initializer
 from copy import deepcopy
 dest = "models"
 
@@ -22,6 +22,7 @@ def create_test(json_files: []):
         model_tests = create_combinations(model_tests, grid['Nesterov'], 'Nesterov')
         model_tests = create_combinations(model_tests, grid['kernel_regularizer'], 'kernel_regularizer')
         model_tests = create_combinations(model_tests, grid['bias_regularizer'], 'bias_regularizer')
+        model_tests = create_combinations(model_tests, grid['weights_initializer'], 'weights_initializer')
         for model_test in model_tests:
             model_test['layers']    = []
             model_test['name']      = model_parameter['name']
@@ -38,7 +39,7 @@ def create_test(json_files: []):
             tests.append(model_test)
     return tests
         
-def execute_test(tests, X_train, y_train):
+def execute_test(tests, X_train, y_train, output_path=None):
     for i in range(len(tests)):
         print(tests[i])
         summary, errors, accuracy = run_model(tests[i], X_train, y_train)
@@ -56,10 +57,11 @@ def run_model(test, X_train, y_train):
                 layer['units'],
                 instantiate_act_func(layer['act_func']),
                 layer['inputs'],
-                test['kernel_regularizer'],
-                test['bias_regularizer'],
-                test['momentum'],
-                test['Nesterov']
+                weights_initializer=instantiate_initializer(test['weights_initializer']),
+                kernel_regularizer=test['kernel_regularizer'],
+                bias_regularizer=test['bias_regularizer'],
+                momentum=test['momentum'],
+                Nesterov=test['Nesterov']
             )
         )
     mlp = MLP(layers)

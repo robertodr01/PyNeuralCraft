@@ -1,25 +1,26 @@
 {
-  "name": "model1",
-  "epochs": 500,
+  "name": "model3",
+  "epochs": 250,
   "loss": "mean_squared_error",
   "metrics": ["accuracy"],
   "layers": [
     {
-      "units": 8,
-      "inputs": 6,
+      "units": 2,
+      "inputs": 17,
       "activation": "relu"
     },
     {
       "units": 1,
-      "inputs": 8,
+      "inputs": 2,
       "activation": "sigmoid"
     }
   ],
   "grid_search": {
-    "lr": [0.2, 0.3],
-    "momentum": [0.9, 0.85],
+    "lr": [0.08],
+    "momentum": [0.9],
     "Nesterov": [true],
     "kernel_regularizer": [0],
-    "bias_regularizer": [0]
+    "bias_regularizer": [0],
+    "weights_initializer": ["he_init", "xavier_init", "random_ranged_init"]
   }
 }

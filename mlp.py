@@ -1,11 +1,9 @@
 import numpy as np
 from layer import Layer
-from losses import Loss, instantiate_loss
+from losses import Loss
 from metrics import Metrics
 from tqdm import trange
 import matplotlib.pyplot as plt
-import json
-from activation_function import instantiate_act_func
 
 class MLP:
 
@@ -62,6 +60,8 @@ class MLP:
                 self.__backward(error, nets, outputs, inputs)
             self.errors.append(round(global_error/len(input), 2))
             bar.set_description(f'ML (loss={round(global_error/len(input), 2)}) (accuracy={round(self.metrics.accuracy(), 2)})')
+            if round(global_error/len(input), 2) == 0.00:
+                break
 
     def plot_error(self):
         plt.plot(self.errors)
