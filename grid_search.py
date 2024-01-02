@@ -1,11 +1,5 @@
-from losses import instantiate_loss
-from activation_function import instantiate_act_func
 import json
-from mlp import MLP
-from layer import Layer
-from weigth_init import instantiate_initializer
 from copy import deepcopy
-dest = "models"
 
 def create_test(json_files: []):
     model_parameters = []
@@ -38,39 +32,6 @@ def create_test(json_files: []):
                 model_test['layers'].append(obj)
             tests.append(model_test)
     return tests
-        
-def execute_test(tests, X_train, y_train, output_path=None):
-    for i in range(len(tests)):
-        print(tests[i])
-        summary, errors, accuracy = run_model(tests[i], X_train, y_train)
-        f = open(f"{dest}/case:{i}-err:{str(round(min(errors), 2))}-acc:{str(round(accuracy, 2))}.logs", 'w')
-        f.write(f"{str(tests[i])}\n")
-        f.write(f"{summary}\n")
-        f.close()
-
-
-def run_model(test, X_train, y_train):
-    layers = []
-    for layer in test['layers']:
-        layers.append(
-            Layer(
-                layer['units'],
-                instantiate_act_func(layer['act_func']),
-                layer['inputs'],
-                weights_initializer=instantiate_initializer(test['weights_initializer']),
-                kernel_regularizer=test['kernel_regularizer'],
-                bias_regularizer=test['bias_regularizer'],
-                momentum=test['momentum'],
-                Nesterov=test['Nesterov']
-            )
-        )
-    mlp = MLP(layers)
-    mlp.compile(test['learning_rate'],instantiate_loss(test['loss']), test['metrics'])
-    mlp.fit(X_train, y_train, test['epochs'])
-    mlp.plot_error()
-    accuracy = mlp.get_metrics()
-    summary  = mlp.summary()
-    return summary, mlp.errors, accuracy
 
 def create_combinations(a, b, key):
     c = []

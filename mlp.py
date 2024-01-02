@@ -3,7 +3,6 @@ from layer import Layer
 from losses import Loss
 from metrics import Metrics
 from tqdm import trange
-import matplotlib.pyplot as plt
 
 class MLP:
 
@@ -46,29 +45,31 @@ class MLP:
         _, outputs, _ = self.__forward(input)
         return outputs[-1]
 
+    def evaluate(self, inputs: [], oracles: []):
+        error = 0
+        self.metrics.reset()
+        for input, oracle in zip(inputs, oracles):
+            _, outputs, _ = self.__forward(input)
+            error += self.loss.error(np.round(np.array(oracle)), np.round(outputs[-1]))
+            self.metrics.compute__results(round(oracle[0]), round(outputs[-1][0]))
+        error = round(error/len(input), 2)
+        return error, self.metrics.accuracy()
+
     def fit(self, input=[[]], oracle=[[]], epochs=0):
         bar = trange(epochs, desc='ML')
-        self.errors = []
+        errors = []
         for _ in bar:
-            self.metrics.reset()
             global_error = 0
             for j in range(len(input)):
                 nets, outputs, inputs = self.__forward(input[j])
                 error = self.eta * self.loss.partial_derivative(np.array(oracle[j]), outputs[-1])
                 global_error += self.loss.error(np.array(oracle[j]), outputs[-1])
-                self.metrics.compute__results(round(oracle[j][0]), round(outputs[-1][0]))
                 self.__backward(error, nets, outputs, inputs)
-            self.errors.append(round(global_error/len(input), 2))
-            bar.set_description(f'ML (loss={round(global_error/len(input), 2)}) (accuracy={round(self.metrics.accuracy(), 2)})')
+            errors.append(round(global_error/len(input), 2))
+            bar.set_description(f'ML (loss={round(global_error/len(input), 2)})')
             if round(global_error/len(input), 2) == 0.00:
                 break
-
-    def plot_error(self):
-        plt.plot(self.errors)
-        plt.show()
-
-    def get_metrics(self):
-        return self.metrics.get_best_accuracy()
+        return errors
 
     def summary(self):
         s = ""

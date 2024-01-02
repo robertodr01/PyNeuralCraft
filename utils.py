@@ -1,5 +1,5 @@
 import pandas as pd
-import mlp as m
+import numpy as np
 
 def get_splits(df: pd.DataFrame, train_percentage: float, test_percentage: float, validation_percentage: float = 0):
 
@@ -23,14 +23,19 @@ def get_splits(df: pd.DataFrame, train_percentage: float, test_percentage: float
 
     return train_df, test_df, validation_df
 
+def hold_out_validation(X: np.ndarray, y: np.ndarray):
+    return k_fold_cross_validation(X, y, 1)[0]
 
-def k_fold_cross_validation(model: m.MLP, X: pd.DataFrame, y: pd.DataFrame, k: int):
+def k_fold_cross_validation(X: np.ndarray, y: np.ndarray, k: int):
+
+    X = pd.DataFrame(X)
+    y = pd.DataFrame(y)
 
     subset_dim = len(X) // k
-    
-    cv_scores = []
+    dataset = []
 
     for i in range(k):
+        obj = {}
         start = i * subset_dim
         end = (i + 1) * subset_dim
 
@@ -39,9 +44,10 @@ def k_fold_cross_validation(model: m.MLP, X: pd.DataFrame, y: pd.DataFrame, k: i
         X_val = X.iloc[start:end]
         y_val = y.iloc[start:end]
 
-        # model.fit(X_train, y_train)
+        obj["X_train"] = X_train.to_numpy()
+        obj["y_train"] = y_train.to_numpy()
+        obj["X_val"] = X_val.to_numpy()
+        obj["y_val"] = y_val.to_numpy()
 
-        # score validation
-        # cv_scores.append(model.score(X_val, y_val))
-        
-    # return cv_scores
+        dataset.append(obj)
+    return dataset

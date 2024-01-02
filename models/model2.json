@@ -16,11 +16,11 @@
     }
   ],
   "grid_search": {
-    "lr": [0.08],
+    "lr": [0.08, 0.02],
     "momentum": [0.9],
     "Nesterov": [true],
     "kernel_regularizer": [0],
     "bias_regularizer": [0],
-    "weights_initializer": ["he_init", "xavier_init", "random_ranged_init"]
+    "weights_initializer": ["xavier_init", "random_init"]
   }
 }
