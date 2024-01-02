@@ -67,8 +67,6 @@ class MLP:
                 self.__backward(error, nets, outputs, inputs)
             errors.append(round(global_error/len(input), 2))
             bar.set_description(f'ML (loss={round(global_error/len(input), 2)})')
-            if round(global_error/len(input), 2) == 0.00:
-                break
         return errors
 
     def summary(self):

@@ -24,7 +24,7 @@ def get_splits(df: pd.DataFrame, train_percentage: float, test_percentage: float
     return train_df, test_df, validation_df
 
 def hold_out_validation(X: np.ndarray, y: np.ndarray):
-    return k_fold_cross_validation(X, y, 1)[0]
+    return k_fold_cross_validation(X, y, 2)[0]
 
 def k_fold_cross_validation(X: np.ndarray, y: np.ndarray, k: int):
 
