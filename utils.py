@@ -1,6 +1,7 @@
 import pandas as pd
 import numpy as np
 
+
 def get_splits(df: pd.DataFrame, train_percentage: float, test_percentage: float, validation_percentage: float = 0):
 
     if train_percentage + test_percentage + validation_percentage != 1:
@@ -36,6 +37,7 @@ def k_fold_cross_validation(X: np.ndarray, y: np.ndarray, k: int):
 
     for i in range(k):
         obj = {}
+
         start = i * subset_dim
         end = (i + 1) * subset_dim
 
