@@ -26,6 +26,7 @@ class Layer:
         n_inputs=None,
         kernel_regularizer=None,
         bias_regularizer=None,
+        weights_initializer=None,
         momentum=None,
         Nesterov=False
     ):
@@ -35,8 +36,11 @@ class Layer:
             raise ValueError("Number of inputs must be greater than 0")
         if(isinstance(act_func, ActivationFunction) == False):
             raise TypeError("Activation function must be an instance of ActivationFunction")
-        self.weights = np.random.rand(n_perceptrons, n_inputs)
-        self.biases = np.random.rand(n_perceptrons, 1)
+        if weights_initializer == None:
+            self.weights = np.random.rand(n_perceptrons, n_inputs)
+            self.biases = np.random.rand(n_perceptrons, 1)
+        else:
+            self.weights, self.biases = weights_initializer(n_perceptrons, n_inputs)
         self.act_func = act_func
         if kernel_regularizer != None:
             self.lambda_w = kernel_regularizer
@@ -88,9 +92,16 @@ class Layer:
         return propagate_errors
     
     def summary(self):
+        s = ""
         for i in range(len(self.weights)):
-            print(f"{10*'-'} Perceptron {10*'-'}")
-            print(self.weights[i])
+            s += f"{15*'-'} Perceptron {15*'-'}\n"
+            s += f"{15*'-'}  Weights   {15*'-'}\n"
+            s += f"{str(self.weights[i])}\n"
+            s += f"{15*'-'}    Bias    {15*'-'}\n"
+            s += f"{str(self.biases[i])}\n"
+            s += "\n"
+        return s
+
 
 # optimization
 def regularization(lam, weights):

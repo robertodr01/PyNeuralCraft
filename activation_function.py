@@ -42,3 +42,15 @@ class Tanh(ActivationFunction):
 
     def derivative(self, x: np.ndarray):
         return np.subtract(1, np.power(np.tanh(x), 2))
+    
+def instantiate_act_func(act: str):
+    if act == 'linear':
+        return Linear()
+    elif act == 'sigmoid':
+        return Sigmoid()
+    elif act == 'relu':
+        return ReLU()
+    elif act == 'tanh':
+        return Tanh()
+    else:
+        raise Exception('no activation function found')
