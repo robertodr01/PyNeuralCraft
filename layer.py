@@ -28,7 +28,8 @@ class Layer:
         bias_regularizer=None,
         weights_initializer=None,
         momentum=None,
-        Nesterov=False
+        Nesterov=False,
+        n_processes=None
     ):
         if(n_perceptrons==None and n_inputs==None):
             raise ValueError("perceptrons or number of inputs must be greater than 0")
@@ -51,6 +52,7 @@ class Layer:
         self.Nesterov = Nesterov
         self.delta_w_old = np.zeros((n_perceptrons, n_inputs))
         self.delta_b_old = np.zeros((n_perceptrons, 1))
+        self.n_processes = n_processes
         
 
     def run(self, x: np.ndarray) -> tuple:
@@ -63,32 +65,36 @@ class Layer:
             nets = np.append(nets, net)
         return (nets, outs)
     
+    def train_each_weights_unit(self, net, error, output, input, i):
+        der = self.act_func.derivative(np.array([net]))[0]
+        delta = error * der
+        delta_w = delta * output * input
+        #delta_w = clip_delta(delta_w)
+        delta_b = delta * output
+        #delta_b = clip_delta(np.array([delta_b]))[0]
+        reg_w = regularization(self.lambda_w, self.weights[i])
+        reg_b = regularization(self.lambda_b, self.biases[i][0])
+        mom_w = momentum(self.alpha, self.delta_w_old[i])
+        mom_b = momentum(self.alpha, self.delta_b_old[i])
+
+        vel_w = 1
+        vel_b = 1
+        if self.Nesterov:
+            vel_w = nesterov(self.vel_w_old, mom_w, delta_w)
+            self.vel_w_old = vel_w
+            vel_b = nesterov(self.vel_b_old, mom_b, delta_b)
+            self.vel_b_old = vel_b
+
+        self.delta_w_old[i] = delta_w
+        self.delta_b_old[i] = delta_b
+        self.weights[i] += delta_w - reg_w + mom_w * vel_w
+        self.biases[i][0] += delta_b - reg_b + mom_b * vel_b
+        return delta * self.weights[i]
+
     def train(self, errors: np.ndarray, net: np.ndarray, output: np.ndarray, input):
         propagate_errors = np.array([0.0] * len(self.weights[0]))
         for i in range(len(self.weights)):
-            der = self.act_func.derivative(np.array([net[i]]))[0]
-            delta = errors[i] * der
-            delta_w = delta * output[i] * input
-            delta_b = delta * output[i]
-            reg_w = regularization(self.lambda_w, self.weights[i])
-            reg_b = regularization(self.lambda_b, self.biases[i][0])
-            mom_w = momentum(self.alpha, self.delta_w_old[i])
-            mom_b = momentum(self.alpha, self.delta_b_old[i])
-
-            vel_w = 1
-            vel_b = 1
-            if self.Nesterov:
-                vel_w = nesterov(self.vel_w_old, mom_w, delta_w)
-                self.vel_w_old = vel_w
-                vel_b = nesterov(self.vel_b_old, mom_b, delta_b)
-                self.vel_b_old = vel_b
-        
-            self.delta_w_old[i] = delta_w
-            self.delta_b_old[i] = delta_b
-            self.weights[i] += delta_w - reg_w + mom_w * vel_w
-            self.biases[i][0] += delta_b - reg_b + mom_b * vel_b
-            propagate_errors += delta * self.weights[i]
-            
+            propagate_errors += self.train_each_weights_unit(net[i], errors[i], output[i], input, i)
         return propagate_errors
     
     def summary(self):
@@ -112,3 +118,10 @@ def momentum(alpha, delta_old):
 
 def nesterov(velocity_old, mom, delta):
     return velocity_old * mom + delta
+
+def clip_delta(grad, clip_threshold=1e2):
+    grad_norm = np.linalg.norm(grad, ord=2)
+    if grad_norm >= clip_threshold:
+        num = clip_threshold/grad_norm
+        grad = num * grad
+    return grad

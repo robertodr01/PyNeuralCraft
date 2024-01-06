@@ -24,7 +24,9 @@ class Metrics:
         self.false_neg = 0
         self.confusion_matrix = pd.DataFrame()
 
-    def compute__results(self, out: float, oracle: float):
+    def compute__results(self, out: np.ndarray, oracle: np.ndarray):
+        out = round(out[0])
+        oracle = round(oracle[0])
         if out == 1 and oracle == 1:
             self.true_pos += 1
         if out == 0 and oracle == 0:

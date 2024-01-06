@@ -1,0 +1,30 @@
+{
+  "name": "model3",
+  "epochs": 100,
+  "loss": "mean_squared_error",
+  "metrics": ["accuracy"],
+  "layers": [
+    {
+      "units": 10,
+      "inputs": 10,
+      "activation": "sigmoid"
+    }, {
+      "units": 10,
+      "inputs": 10,
+      "activation": "sigmoid"
+    },
+    {
+      "units": 3,
+      "inputs": 10,
+      "activation": "sigmoid"
+    }
+  ],
+  "grid_search": {
+    "lr": [0.09],
+    "momentum": [0.9],
+    "Nesterov": [true],
+    "kernel_regularizer": [0],
+    "bias_regularizer": [0],
+    "weights_initializer": ["xavier_uniform_init"]
+  }
+}
