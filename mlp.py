@@ -65,6 +65,8 @@ class MLP:
     def fit(self, input=[[]], oracle=[[]], epochs=0):
         #bar = trange(epochs, desc='ML')
         errors = []
+        accuracy = []
+        metrics = Metrics()
         for _ in range(epochs):
             global_error = 0
             for j in range(len(input)):
@@ -74,9 +76,14 @@ class MLP:
                 error = self.eta * loss_partial_derivative
                 self.__backward(error, nets, outputs, inputs)
                 global_error += self.loss.error(np.array(oracle[j]), outputs[-1])
+                if len(self.metrics) > 0:
+                    metrics.compute__results(oracle[j], outputs[-1])
             global_error = round(global_error/len(input), 6)
             errors.append(global_error)
+            accuracy.append(metrics.accuracy())
             #bar.set_description(f'ML (loss={round(global_error/len(input), 2)})')
+        if 'accuracy' in self.metrics:
+            return errors, accuracy
         return errors
 
     def summary(self):
