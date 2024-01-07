@@ -1,6 +1,6 @@
 {
   "name": "model1",
-  "epochs": 450,
+  "epochs": 400,
   "loss": "mean_squared_error",
   "metrics": ["accuracy"],
   "layers": [
@@ -16,11 +16,11 @@
     }
   ],
   "grid_search": {
-    "lr": [0.3, 0.09, 0.1, 0.2],
+    "lr": [0.86, 0.7, 0.5, 0.3],
     "momentum": [0.9],
     "Nesterov": [true],
-    "kernel_regularizer": [0],
-    "bias_regularizer": [0],
-    "weights_initializer": ["random_init"]
+    "kernel_regularizer": [0.0001],
+    "bias_regularizer": [0.0001],
+    "weights_initializer": ["xavier_uniform_init"]
   }
 }
