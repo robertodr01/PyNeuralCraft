@@ -1,6 +1,6 @@
 {
   "name": "model1",
-  "epochs": 450,
+  "epochs": 400,
   "loss": "mean_squared_error",
   "metrics": ["accuracy"],
   "layers": [

@@ -95,7 +95,7 @@ class MLP:
         return s
     
     def save(self, filename):
-        with open(filename, 'wb') as file:
+        with open(filename + ".pkl", 'wb') as file:
             pickle.dump(self, file)
     
     def load(self, filename):
