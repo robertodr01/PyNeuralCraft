@@ -51,14 +51,14 @@ class MLP:
 
     def evaluate(self, inputs: [], oracles: []):
         error = 0
-        metrics = Metrics()
+        metrics = Metrics(self.metrics)
         for input, oracle in zip(inputs, oracles):
             _, outputs, _ = self.__forward(input)
             error += self.loss.error(np.array(oracle), outputs[-1])
             if len(self.metrics) > 0:
                     metrics.compute__results(oracle, outputs[-1])
         error = round(error/len(inputs), 6)
-        if 'accuracy' in self.metrics:
+        if len(self.metrics) > 0:
             return error, metrics.accuracy()
         return error
 
@@ -66,7 +66,7 @@ class MLP:
         #bar = trange(epochs, desc='ML')
         errors = []
         accuracy = []
-        metrics = Metrics()
+        metrics = Metrics(self.metrics)
         for _ in range(epochs):
             global_error = 0
             for j in range(len(input)):
@@ -82,8 +82,8 @@ class MLP:
             errors.append(global_error)
             accuracy.append(metrics.accuracy())
             #bar.set_description(f'ML (loss={round(global_error/len(input), 2)})')
-        if 'accuracy' in self.metrics:
-            return errors, accuracy
+        if len(self.metrics) > 0:
+            return error, accuracy
         return errors
 
     def summary(self):
