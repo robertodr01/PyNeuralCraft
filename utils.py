@@ -1,6 +1,6 @@
 import pandas as pd
 import numpy as np
-
+from sklearn.model_selection import train_test_split
 
 def get_splits(df: pd.DataFrame, train_percentage: float, test_percentage: float, validation_percentage: float = 0):
 
@@ -25,7 +25,16 @@ def get_splits(df: pd.DataFrame, train_percentage: float, test_percentage: float
     return train_df, test_df, validation_df
 
 def hold_out_validation(X: np.ndarray, y: np.ndarray):
-    return k_fold_cross_validation(X, y, 2)[0]
+    train_len = round((len(X) / 100) * 80)
+    dataset = []
+    obj = {}
+
+    obj['X_train'] = X[:train_len]
+    obj['y_train'] = y[:train_len]
+    obj['X_val']  = X[train_len:]
+    obj['y_val']  = y[train_len:]
+    dataset.append(obj)
+    return dataset
 
 def k_fold_cross_validation(X: np.ndarray, y: np.ndarray, k: int):
 

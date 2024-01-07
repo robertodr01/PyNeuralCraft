@@ -23,6 +23,12 @@ def he_init(num_unit, num_input):
     input_weights = np.random.randn(num_unit, num_input) * np.sqrt(2 / num_input)
     return input_weights, bias_weights
 
+def xavier_uniform_init(num_unit, num_input):
+    a = np.sqrt(6.0 / (num_input + num_unit))
+    input_weights = np.random.uniform(low=-a, high=a, size=(num_unit, num_input))
+    bias_weights = np.zeros((num_unit, 1))
+    return input_weights, bias_weights
+
 def instantiate_initializer(initializer: str):
     if initializer == "he_init":
         return he_init
@@ -32,5 +38,7 @@ def instantiate_initializer(initializer: str):
         return random_ranged_init
     elif initializer == "random_init":
         return random_init
+    elif initializer == "xavier_uniform_init":
+        return xavier_uniform_init
     else:
         raise Exception('no initialization found')

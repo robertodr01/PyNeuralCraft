@@ -1,0 +1,26 @@
+{
+  "name": "model1",
+  "epochs": 400,
+  "loss": "mean_squared_error",
+  "metrics": ["accuracy"],
+  "layers": [
+    {
+      "units": 4,
+      "inputs": 17,
+      "activation": "sigmoid"
+    },
+    {
+      "units": 1,
+      "inputs": 4,
+      "activation": "sigmoid"
+    }
+  ],
+  "grid_search": {
+    "lr": [0.3, 0.09, 0.1, 0.2],
+    "momentum": [0.9],
+    "Nesterov": [true],
+    "kernel_regularizer": [0],
+    "bias_regularizer": [0],
+    "weights_initializer": ["random_init"]
+  }
+}
