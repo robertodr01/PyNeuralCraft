@@ -1,8 +1,8 @@
 {
   "name": "model3",
-  "epochs": 100,
+  "epochs": 500,
   "loss": "mean_squared_error",
-  "metrics": ["accuracy"],
+  "metrics": ["mean_euclidean_error"],
   "layers": [
     {
       "units": 10,

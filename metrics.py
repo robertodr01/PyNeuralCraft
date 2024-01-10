@@ -2,6 +2,8 @@ import numpy as np
 import pandas as pd
 import matplotlib.pyplot as plt
 from copy import deepcopy
+from losses import MeanEuclideanError
+
 class Metrics:
     
     true_positive: int
@@ -16,6 +18,8 @@ class Metrics:
         self.false_neg = 0
         self.confusion_matrix = pd.DataFrame()
         self.metrics = deepcopy(metrics)
+        if "mean_euclidean_error" in self.metrics:
+            self.mee_func = MeanEuclideanError()
 
     def reset(self):
         self.true_pos = 0
@@ -25,16 +29,19 @@ class Metrics:
         self.confusion_matrix = pd.DataFrame()
 
     def compute__results(self, out: np.ndarray, oracle: np.ndarray):
-        out = round(out[0])
-        oracle = round(oracle[0])
-        if out == 1 and oracle == 1:
-            self.true_pos += 1
-        if out == 0 and oracle == 0:
-            self.true_neg += 1    
-        if out == 1 and oracle == 0:
-            self.false_pos += 1
-        if out == 0 and oracle == 1:
-            self.false_neg += 1
+        if "mean_euclidean_error" in self.metrics:
+            self.mee_res = self.mee_func.error(oracle, out)
+        if "accuracy" in self.metrics:
+            out = round(out[0])
+            oracle = round(oracle[0])
+            if out == 1 and oracle == 1:
+                self.true_pos += 1
+            if out == 0 and oracle == 0:
+                self.true_neg += 1    
+            if out == 1 and oracle == 0:
+                self.false_pos += 1
+            if out == 0 and oracle == 1:
+                self.false_neg += 1
 
     def compute_results(self, oracle: np.ndarray, out: np.ndarray):
 
@@ -65,6 +72,8 @@ class Metrics:
         self.confusion_matrix = cm
 
     def accuracy(self):
+        if "mean_euclidean_error" in self.metrics:
+            return self.mee_res
         a = self.true_pos + self.true_neg 
         b = self.true_pos + self.true_neg + self.false_pos + self.false_neg
         res = 0 if b == 0 else a/b * 100

@@ -12,7 +12,7 @@ class MLP:
     eta     = 0.01
     errors  = []
 
-    def __init__(self, layers):
+    def __init__(self, layers=None):
         if layers != None:
             self.layers = layers
             # for i in range(len(self.layers)):
@@ -47,30 +47,38 @@ class MLP:
 
     def run(self, input: []):
         _, outputs, _ = self.__forward(input)
+        print(self.layers)
+        print(outputs)
         return outputs[-1]
 
-    def evaluate(self, inputs: [], oracles: []):
+    def evaluate(self, inputs: [], oracles: [], adapt=None):
         error = 0
-        metrics = Metrics()
+        metrics = Metrics(self.metrics)
         for input, oracle in zip(inputs, oracles):
             _, outputs, _ = self.__forward(input)
+            if adapt != None:
+                oracle = adapt([oracle])[0]
+                outputs[-1] = adapt([outputs[-1]])[0]
             error += self.loss.error(np.array(oracle), outputs[-1])
             if len(self.metrics) > 0:
                     metrics.compute__results(oracle, outputs[-1])
         error = round(error/len(inputs), 6)
-        if 'accuracy' in self.metrics:
+        if len(self.metrics) > 0:
             return error, metrics.accuracy()
         return error
 
-    def fit(self, input=[[]], oracle=[[]], epochs=0):
+    def fit(self, input=[[]], oracle=[[]], epochs=0, adapt=None):
         #bar = trange(epochs, desc='ML')
         errors = []
         accuracy = []
-        metrics = Metrics()
+        metrics = Metrics(self.metrics)
         for _ in range(epochs):
             global_error = 0
             for j in range(len(input)):
                 nets, outputs, inputs = self.__forward(input[j])
+                if adapt != None:
+                    oracle[j] = adapt([oracle[j]])[0]
+                    outputs[-1] = adapt([outputs[-1]])[0]
                 loss_partial_derivative = self.loss.partial_derivative(np.array(oracle[j]), outputs[-1])
                 #loss_partial_derivative = clip_delta(loss_partial_derivative)
                 error = self.eta * loss_partial_derivative
@@ -82,8 +90,8 @@ class MLP:
             errors.append(global_error)
             accuracy.append(metrics.accuracy())
             #bar.set_description(f'ML (loss={round(global_error/len(input), 2)})')
-        if 'accuracy' in self.metrics:
-            return errors, accuracy
+        if len(self.metrics) > 0:
+            return error, accuracy
         return errors
 
     def summary(self):
@@ -99,8 +107,12 @@ class MLP:
             pickle.dump(self, file)
     
     def load(self, filename):
-        with open(filename, 'wb') as file:
-            self = pickle.load(file)
+        file = open(filename, 'rb')
+        mlp = pickle.load(file)
+        self.layers = mlp.layers
+        self.loss    = mlp.loss
+        self.eta     = mlp.eta
+        file.close()
         
 
 def clip_delta(grad, clip_threshold=1e5):
