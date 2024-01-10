@@ -1,6 +1,6 @@
 {
   "name": "model3",
-  "epochs": 100,
+  "epochs": 500,
   "loss": "mean_squared_error",
   "metrics": ["mean_euclidean_error"],
   "layers": [
