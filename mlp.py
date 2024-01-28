@@ -47,8 +47,6 @@ class MLP:
 
     def run(self, input: []):
         _, outputs, _ = self.__forward(input)
-        print(self.layers)
-        print(outputs)
         return outputs[-1]
 
     def evaluate(self, inputs: [], oracles: [], adapt=None):
