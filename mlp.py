@@ -91,7 +91,7 @@ class MLP:
             accuracy.append(metrics.accuracy())
             #bar.set_description(f'ML (loss={round(global_error/len(input), 2)})')
         if len(self.metrics) > 0:
-            return error, accuracy
+            return errors, accuracy
         return errors
 
     def summary(self):
