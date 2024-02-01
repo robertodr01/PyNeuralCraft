@@ -1,5 +1,5 @@
 {
-  "name": "model3",
+  "name": "model1",
   "epochs": 500,
   "loss": "mean_squared_error",
   "metrics": ["mean_euclidean_error"],
@@ -20,11 +20,11 @@
     }
   ],
   "grid_search": {
-    "lr": [0.09],
+    "lr": [0.8, 0.2],
     "momentum": [0.9],
     "Nesterov": [true],
-    "kernel_regularizer": [0],
-    "bias_regularizer": [0],
+    "kernel_regularizer": [0, 0.0001],
+    "bias_regularizer": [0, 0.0001],
     "weights_initializer": ["xavier_uniform_init"]
   }
 }

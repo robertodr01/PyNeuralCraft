@@ -1,21 +1,21 @@
 {
-  "name": "model3",
+  "name": "model4",
   "epochs": 500,
   "loss": "mean_squared_error",
   "metrics": ["mean_euclidean_error"],
   "layers": [
     {
-      "units": 20,
+      "units": 30,
       "inputs": 10,
-      "activation": "sigmoid"
+      "activation": "relu"
     }, {
-      "units": 20,
-      "inputs": 20,
-      "activation": "sigmoid"
+      "units": 30,
+      "inputs": 30,
+      "activation": "relu"
     },
     {
       "units": 3,
-      "inputs": 20,
+      "inputs": 30,
       "activation": "sigmoid"
     }
   ],
@@ -23,8 +23,8 @@
     "lr": [0.8, 0.2],
     "momentum": [0.9],
     "Nesterov": [true],
-    "kernel_regularizer": [0, 0.0001],
-    "bias_regularizer": [0, 0.0001],
+    "kernel_regularizer": [0.0001],
+    "bias_regularizer": [0.0001],
     "weights_initializer": ["xavier_uniform_init"]
   }
 }
